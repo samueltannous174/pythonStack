@@ -11,7 +11,6 @@ def randInt(min=0, max=100):
     num = random.random() * (max - min) + min
     return round(num)
 
-print("\n=== Silent Version Tests ===")
-print(randInt(min=80, max=30))   # silently swaps
-print(randInt(min=42, max=42))   # always returns 42
-print(randInt(min=-50, max=-10)) # negative range
+print(randInt(min=80, max=30))   
+print(randInt(min=42, max=42))   
+print(randInt(min=-50, max=-10)) 
