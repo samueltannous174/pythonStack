@@ -12,7 +12,7 @@ class User:
             return self
             
         self.account_balance -= amount
-        print(f"Withdrawal of ${amount} successful.")
+        print(f"Withdrawal of ${amount} successful")
         return self
     
     def display_user_balance(self):
@@ -21,7 +21,7 @@ class User:
     
     def transfer_money(self, other_user, amount):
         if amount <= 0:
-            print("Transfer amount must be positive.")
+            print("Transfer amount must be positive")
             return self
             
         if amount > self.account_balance:
@@ -31,5 +31,5 @@ class User:
         self.account_balance -= amount
         other_user.account_balance += amount
 
-        print(f"Transfer of ${amount} from {self.name} to {other_user.name} completed successfully.")
+        print(f"Transfer of ${amount} from {self.name} to {other_user.name} completed successfully")
         return self
