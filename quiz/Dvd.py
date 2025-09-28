@@ -6,9 +6,7 @@ class DVD(Item):
         self.year = year
     
     def displayInfo(self):
-        print(f"DVD Name: {self.name}")
-        print(f"Price: {self.price}")
-        print(f"Borrowed: {self.borrowed}")
-        return self
-    
+
+        return f"(DVD) Name: {self.name}\nPrice: {self.price}\nBorrowed: {self.borrowed}\n"
+
 

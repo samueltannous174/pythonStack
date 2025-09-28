@@ -6,8 +6,4 @@ class Book(Item):
         self.author = author
     
     def displayInfo(self):
-        print(f"Book Name: {self.name}")
-        print(f"Price: {self.price}")
-        print(f"Borrowed: {self.borrowed}")
-        return self
-    
+        return f"(Book) Name: {self.name}\nPrice: {self.price}\nBorrowed: {self.borrowed}\n"

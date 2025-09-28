@@ -8,17 +8,22 @@ class Item:
         self.dateToReturn = dateToReturn
 
     def displayInfo(self):
-        print(f" Name: {self.name}")
-        print(f"Price: {self.price}")
-        print(f"Borrowed: {self.borrowed}")
-        return self
+     
+        return f"Item Name: {self.name}\nPrice: {self.price}\nBorrowed: {self.borrowed}\n"
     
     def borrow(self):
         self.borrowed = True
+        
     def returnItem(self):
         self.borrowed = False
+
     def checkIfBorrowed(self):
+        if self.borrowed == True:
+            print("Item is borrowed")
+        else:
+            print("Item is not borrowed")
         return self.borrowed
+        
     def calculateLateFee(self):
         today = datetime.datetime.now()
         days_overdue =  today - self.dateToReturn

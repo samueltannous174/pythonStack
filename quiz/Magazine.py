@@ -6,7 +6,4 @@ class Magazine(Item):
         self.cover = cover
 
     def displayInfo(self):
-        print(f"Magazine Name: {self.name}")
-        print(f"Price: {self.price}")
-        print(f"Borrowed: {self.borrowed}")
-        return self
+        return f"(Magazine) Name: {self.name}\nPrice: {self.price}\nBorrowed: {self.borrowed}\n"
