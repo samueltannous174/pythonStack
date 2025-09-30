@@ -1,12 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Deep Survey Index</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submitted Info</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Submitted Info</h1>
-    <p>Name: {{ name }}</p>
-    <p>Deep Location: {{ location }}</p>
-    <p>Favorite Language: {{ language }}</p>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="p-6 bg-white border-2 border-black rounded w-[400px]">
+    <h2 class="font-bold mb-4 underline">Submitted Info</h2>
+
+    <div class="space-y-1">
+      <div class="flex justify-between">
+        <span class="font-medium">Name: </span>
+        <span>{{name}}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">Dojo Location: </span>
+        <span>{{location}}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">Favorite Language {{language}}</span>
+        <span>{{language}}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">Comment:</span>
+        <span>Hi there :)</span>
+      </div>
+    </div>
+    <div class="flex justify-end mt-6">
+      <button onclick="window.history.back()" 
+              class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 ">
+        Go Back
+      </button>
+    </div>
+  </div>
 </body>
 </html>

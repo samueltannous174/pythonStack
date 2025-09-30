@@ -1,35 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Deep Survey Index</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dojo Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <form action="/result" method="POST">
-        <h1>Deep Survey Index</h1>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="p-6 bg-white border-2 border-black rounded w-[500px]">
+    <form action="/result" method="POST" class="space-y-4">
 
-        <label for="name">Your Name:</label>
-        <input type="text" name="name" id="name" required>
+      <div class="flex items-center justify-between">
+        <label for="name" class="mr-2 font-medium">Your Name:</label>
+        <input type="text" id="name" name="name" 
+               class="w-48 border-2 border-black px-2 py-1 rounded "/>
+      </div>
 
-        <label for="location">Dojo Location:</label>
-        <select name="location" id="location">
-            <option value="San Jose">San Jose</option>
-            <option value="Ramallah">Ramallah</option>
-            <option value="Jeruslem">Jeruslem</option>
+      <div class="flex items-center justify-between">
+        <label for="location" class="mr-2 font-medium">Dojo Location:</label>
+        <select id="location" name="location" 
+                class="w-48 border-2 border-black px-2 py-1 rounded ">
+          <option>San Jose</option>
+          <option>Seattle</option>
+          <option>Los Angeles</option>
+          <option>Dallas</option>
         </select>
+      </div>
 
-        <label for="language">Favorite Language:</label>
-        <select name="language" id="language">
-            <option value="Python">Python</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="Java">Java</option>
+      <div class="flex items-center justify-between">
+        <label for="language" class="mr-2 font-medium">Favorite Language:</label>
+        <select id="language" name="language" 
+                class="w-48 border-2 border-black px-2 py-1 rounded">
+          <option>Python</option>
+          <option>JavaScript</option>
+          <option>Java</option>
+          <option>C++</option>
         </select>
+      </div>
 
-        <label for="comment">Comment (optional):</label>
-        <textarea name="comment" id="comment" rows="4" placeholder="Share your thoughts..."></textarea>
+      <div>
+        <label for="comment" class="font-medium">Comment (optional):</label>
+        <textarea id="comment" name="comment" rows="3"
+                  class="w-full border-2 border-black px-2 py-1 rounded mt-1 "></textarea>
+      </div>
 
-        <input type="submit" value="Submit">
+      <div>
+        <p class="font-medium mb-1">Gender:</p>
+        <div class="flex gap-4">
+          <label class="flex items-center">
+            <input type="radio" name="time" value="morning" 
+                   class="mr-2 border-2 border-black ">
+            Female
+          </label>
+          <label class="flex items-center">
+            <input type="radio" name="time" value="male" 
+                   class="mr-2 border-2 border-black">
+            Male
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <p class="font-medium mb-1">Skills You Want to Improve:</p>
+        <div class="flex flex-col gap-1">
+          <label class="flex items-center">
+            <input type="checkbox" name="skills" value="frontend"
+                   class="mr-2 border-2 border-black">
+            Frontend
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" name="skills" value="backend"
+                   class="mr-2 border-2 border-black ">
+            Backend
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" name="skills" value="database"
+                   class="mr-2 border-2 border-black ">
+            Database
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-end">
+        <input type="submit" value="Button"
+               class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
+      </div>
     </form>
+  </div>
 </body>
 </html>
