@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.http import JsonResponse
 
 def root(request):
     return HttpResponseRedirect('/blogs')
@@ -23,3 +24,11 @@ def edit(request, number):
 def destroy(request, number):
     return HttpResponseRedirect('/blogs')
 
+
+
+def json_response(request):
+    data = {
+        "title": "My Blog Title",
+        "content": "This is the content of the blog."
+    }
+    return JsonResponse(data)
