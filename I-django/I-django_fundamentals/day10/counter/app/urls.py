@@ -5,5 +5,7 @@ from app import views
 
 urlpatterns = [
     path('', views.counter),
-    path('counter', views.counter)
+    path('counter', views.counter),
+    path('reset', views.reset)
 ]
+ 
