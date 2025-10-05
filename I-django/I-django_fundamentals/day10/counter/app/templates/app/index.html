@@ -8,5 +8,18 @@
 <body>
     <h1>Counter</h1>
     <h1>{{counter}} times</h1>
+    <form action="/increment2" method="POST">
+        {% csrf_token %}
+    <input type="submit" value="Increment Counter by 2">
+    </form>
+        <form action="/reset" method="POST" style="margin-top: 20px;">
+        {% csrf_token %}
+    <input type="submit" value="Reset Counter">
+    </form> 
+<h1 >
+    visited times :  {{visit_count}}
+</h1>
+
+    
 </body>
 </html>

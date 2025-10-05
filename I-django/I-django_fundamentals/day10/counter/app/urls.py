@@ -6,6 +6,6 @@ from app import views
 urlpatterns = [
     path('', views.counter),
     path('counter', views.counter),
-    path('reset', views.reset)
-]
- 
+    path('reset', views.reset),
+    path('increment2', views.increment_by_2),
+    ]
