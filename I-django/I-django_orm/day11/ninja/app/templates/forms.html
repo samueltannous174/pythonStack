@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ninja Gold</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    </head>
+    <body>
+        <div class="w-[80%] mx-auto mt-3">
+            <div class="">
+                <label for="gold">Your Gold: </label>
+                <input type="text" name="gold" id="gold" placeholder="{{request.session.gold}}" disabled
+                       class="border-2 border-solid p-1 ml-5">
+            </div>
+            <div class="flex justify-between my-10">
+                <div class="border-2 border-solid p-1 w-[20%] mt-5 flex flex-col items-center justify-evenly h-50">
+                    <h1>Farm</h1>
+                    <p>(earn 10-20 gold)</p>
+                    <form method="POST" action="/submitted">
+                        {% csrf_token %}
+                        <button type="submit" name="form" value="farm" class="border-2 p-1">Find gold</button>
+                    </form>
+                </div>
+                <div class="border-2 border-solid p-1 w-[20%] mt-5 flex flex-col items-center justify-evenly h-50">
+                    <h1>Farm</h1>
+                    <p>(earn 10-20 gold)</p>
+                    <form method="POST" action="/submitted">
+                        {% csrf_token %}
+                        <button type="submit" name="form" value="cave" class="border-2 p-1">Find gold</button>
+                    </form>
+                </div>
+                <div class="border-2 border-solid p-1 w-[20%] mt-5 flex flex-col items-center justify-evenly h-50">
+                    <h1>Farm</h1>
+                    <p>(earn 10-20 gold)</p>
+                    <form method="POST" action="/submitted">
+                        {% csrf_token %}
+                        <button type="submit"   name="form" value="house" class="border-2 p-1">Find gold</button>
+                    </form>
+                </div>
+                <div class="border-2 border-solid p-1 w-[20%] mt-5 flex flex-col items-center justify-evenly h-50">
+                    <h1>Farm</h1>   
+                    <p>(earn 10-20 gold)</p>
+                    <form method="POST" action="/submitted">
+                        {% csrf_token %}
+                        <button type="submit" name="form" value="quest" class="border-2 p-1">Find gold</button>
+                    </form>
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <label for="popup" class="font-bold text-2xl mt-10">Activities:</label>
+                <div id="popup" class="border-2 p-4 mt-10 h-60 overflow-y-auto">
+                    {% for value in request.session.activity %}
+                        {% if "Earned" in value %}
+                            <p class="text-green-600">{{ value }}</p>
+                        {% else %}
+                            <p class="text-red-600">{{ value }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+        </div>
+    </body>
+</html>
