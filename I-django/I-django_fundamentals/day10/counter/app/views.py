@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 
 def index(request):
@@ -11,12 +11,10 @@ def counter(request):
     return render(request, 'app/index.html', {'counter': counter_value, 'visit_count': get_visit_count(request.session)})
 
 def reset(request):
-    request.session['counter'] = 0
-    return render(request, 'app/index.html', {'counter': 0, 'visit_count': get_visit_count(request.session)})
-
-def destroy_session(request):
     request.session.flush()
-    return render(request, 'app/index.html', {'counter': 0, 'visit_count': get_visit_count(request.session)})
+    request.session['counter'] = 0
+    return redirect('/')
+
 
 def increment_by_2(request):
     counter_value = request.session.get('counter', 0) + 2
