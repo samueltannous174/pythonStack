@@ -8,7 +8,6 @@ def index(request):
 def submitted(request):
     if request.session.get('guess') is None:
         request.session['guess'] = random.randint(1, 100)
-        print(f"Secret number: {request.session['guess']}")  
 
     if request.session.get('count') is None:
         request.session['count'] = 1
