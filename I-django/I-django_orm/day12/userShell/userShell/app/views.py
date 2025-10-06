@@ -17,7 +17,7 @@ def add (request):
      email = request.POST['email']
      age = request.POST['age']
      User.objects.create(first_name=first_name, last_name=last_name, email=email, age=age)
-     return render(request, 'index.html')
+     return render('/')
 
 
 
