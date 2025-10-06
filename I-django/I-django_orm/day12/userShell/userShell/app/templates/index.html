@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+   <div class="max-w-4xl mx-auto">
+        <div class="bg-white  p-6 mb-8">
+            <h1 class=" font-bold text-center mb-6">All the Users</h1>
+            <table class="w-full border-2 border-black">
+                    <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-black p-2">First Name</th>
+                    <th class="border border-black p-2">Last Name</th>
+                    <th class="border border-black p-2">Email</th>
+                    <th class="border border-black p-2">Age</th>
+                </tr>
+            </thead>
+                {% for user in users %}
+                <tr class="border-2 border-black">
+                    <td class="border-2 border-black p-2">{{user.first_name}} </td>
+                    <td class="border-2 border-black p-2">{{user.last_name}} </td>
+                    <td class="border-2 border-black p-2">{{user.email}}</td>
+                    <td class="border-2 border-black p-2">{{user.age}}</td>
+                </tr>
+                {% endfor %}
+             
+            </table>
+        </div> 
+
+        <div class="bg-white  p-6">
+            <h2 class="text-2xl font-bold text-center mb-6">Add a User</h2>
+            <form action="/add_users" method="POST" id="addUserForm" class="space-y-4">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block mb-2 font-medium">First Name</label>
+                        <input type="text" name="firstName" class="w-full border-2 border-black p-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium">Last Name</label>
+                        <input type="text" name="lastName" class="w-full border-2 border-black p-2" required>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block mb-2 font-medium">Email</label>
+                        <input type="email" name="email" class="w-full border-2 border-black p-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-medium">Age</label>
+                        <input type="number" name="age" class="w-full border-2 border-black p-2" required>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="bg-white border-2 border-black px-8 py-2 font-medium hover:bg-gray-100">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
