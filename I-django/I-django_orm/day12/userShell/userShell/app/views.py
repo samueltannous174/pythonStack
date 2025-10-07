@@ -8,6 +8,7 @@ def index(request):
     }
     for user in context['users']:
         print(user)
+    
 
     return render(request, 'index.html', context)
 
