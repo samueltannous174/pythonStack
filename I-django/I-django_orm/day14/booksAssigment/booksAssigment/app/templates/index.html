@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books & Authors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="w-[80%] mx-auto bg-white rounded-lg  p-6">
+      
+        <div class="flex gap-8 justify-between">
+            <div class="w-[40%]">
+                <form class="space-y-3  " action="/add_book" method="POST">
+                    {% csrf_token %}
+                            <h1 class="text-2xl font-bold mb-6">Add a Book </h1>
+
+                    <div class="flex gap-4  items-center  justify-between ">
+                        <label class=" text-sm font-medium mb-1">Title</label>
+                        <input type="text" name="title" class="w-[50%] px-3 py-2   rounded border-black  border-4">
+                    </div>
+                    <div class="flex gap-4 align-center items-center justify-between   ">
+                        <label class=" text-sm font-medium mb-1">Description</label>
+                        <input type="text" name="desc" class=" h-[100px] w-[50%] px-3 py-2 border-black rounded border-4">
+                    </div>
+                    <button type="submit" class="px-4 py-2 bg-gray-200  font-medium">Add</button>
+                </form>
+            </div>
+
+            <div class=" w-[40%]">
+                <table class="w-full border-spacing-2  border border-gray-400">
+                    <thead>
+                        <tr class="bg-gray-100" >
+                            <th class="text-left py-2 px-3 text-sm font-semibold">ID</th>
+                            <th class="text-left py-2 px-3 text-sm font-semibold">Title</th>
+                            <th class="text-left py-2 px-3 text-sm font-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr class="border-b">
+                            <td class="py-2 px-3 ">{{book.id}} </td>
+                            <td class="py-2 px-3">{{book.title}} </td>
+                            <td class="py-2 px-3"><a href="books/{{book.id}}" class="text-blue-600 ">View</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
