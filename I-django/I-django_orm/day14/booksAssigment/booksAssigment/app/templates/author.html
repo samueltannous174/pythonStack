@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="w-[80%] mx-auto bg-white rounded-lg  p-6">
+
+    <h1 class="text-4xl mb-6 ">{{author.first_name}} {{author.last_name}} </h1>
+    <h2 class="text-3xl mb-6">ID: {{author.id}}</h2>
+
+    <h1 class="text-4xl mb-6">Books</h1>
+   {% if author.books.exists %}
+    <ul class="list-disc py-6 px-3">
+        {% for book in author.books.all %}
+            <li class="text-2xl mb-6">{{book.title}} </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="text-2xl mb-6">No Books</p>
+{% endif %}
+
+  
+ 
+
+    <form  action="/add_book_to_author/{{author.id}}" method="POST">
+        {% csrf_token %}
+        <select class="border-2 border-black w-[200px] py-2 px-3  " name="book_id">
+            <option value="0">Select Book</option>
+            {% for book in allBooks %}
+                <option value="{{book.id}}">{{book.title}} </option>
+    {% endfor %}
+        </select>
+        <button type="submit" class="border-2 border-black w-[200px] py-2 px-3 " value="Add Book">Add </button>
+    </form>
+</div>
+
+</body>
+</html>

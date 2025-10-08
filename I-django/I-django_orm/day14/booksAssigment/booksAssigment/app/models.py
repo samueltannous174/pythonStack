@@ -41,5 +41,8 @@ def get_all_authors():
     return Authors.objects.all
 def get_author(author_id):
     return Authors.objects.get(id=author_id)
+def get_author_books(author_id):
+    author = get_author(author_id)
+    return author.books
 def add_author(first_name,last_name):
     return Authors.objects.create(first_name=first_name,last_name=last_name)
