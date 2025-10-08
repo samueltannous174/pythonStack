@@ -14,11 +14,20 @@
     <p class="text-2xl mb-6">{{book.desc}} </p>
 
     <h1 class="text-4xl mb-6">Authors</h1>
-    {% for author in book.authors.all %}
-        <p>{{author.first_name}} {{author.last_name}} </p>
-    {% endfor %}
+   {% if book.authors.exists %}
+    <ul class="list-disc py-6 px-3">
+        {% for author in book.authors.all %}
+            <li class="text-2xl mb-6">{{author.first_name}} {{author.last_name}}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="text-2xl mb-6">No authors</p>
+{% endif %}
 
-    <form  action="/add_author_to_book/{{book.id}}/{{author.id}}" method="POST">
+  
+ 
+
+    <form  action="/add_author_to_book/{{book.id}}" method="POST">
         {% csrf_token %}
         <select class="border-2 border-black w-[200px] py-2 px-3  " name="author_id">
             <option value="0">Select Author</option>

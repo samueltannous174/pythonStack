@@ -25,6 +25,7 @@ def viewBook(request,book_id):
     }
     return render(request, 'book.html', context)
 
-def addAuthorToBook(request,book_id,author_id):
+def addAuthorToBook(request,book_id):
+    author_id = request.POST["author_id"]
     add_author_to_book(author_id,book_id)
     return redirect(f'/books/{book_id}')    
