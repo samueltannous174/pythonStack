@@ -2,7 +2,6 @@ from django.db import models
 import re
 from django.contrib import messages
 import bcrypt
-# Create your models here.
 class RegisterManager(models.Manager):
     def basic_validator(self, postData):
         print(postData)
