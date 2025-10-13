@@ -42,38 +42,31 @@ class User(models.Model):
 
 
 
-def create_user(request,postData):
-    errors = User.objects.basic_validator(postData) 
-    # print("hello") 
-    # print(postData)
-    if len(errors) > 0:
-        for key, value in errors.items():
-            messages.error(request, value)
+def create_user(postData):
+
+
     hashed_pw = bcrypt.hashpw(postData['password'].encode(), bcrypt.gensalt()).decode()
-    user = User.objects.create(first_name=postData['firstName'], last_name=postData['lastName'], email=postData["email"], password=hashed_pw)
-    return user
+    return User.objects.create(
+        first_name=postData['firstName'],
+        last_name=postData['lastName'],
+        email=postData["email"],
+        password=hashed_pw
+    )
 
 
 
 
-def login_user(request, postData, session):
-    errors = {}
-    user = User.objects.get(email=postData['email'])
 
-    if not user:
-        errors['email'] = "Email does not exist"
-        messages.error(request, errors['email'])
+def login_user( postData):
+    try:
+        user = User.objects.get(email=postData['email'])
+    except User.DoesNotExist:
         return None
-    
-    if not bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
-        errors['password'] = "Password is incorrect"
-        messages.error(request, errors['password'])
-        return None
-    
-    print(user.first_name)
-    session['name'] = user.first_name   
 
-    return user
+    if bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
+        return user
+    return None
+
 
 
  
