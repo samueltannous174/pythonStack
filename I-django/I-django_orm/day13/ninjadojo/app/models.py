@@ -20,6 +20,9 @@ class Ninja(models.Model):
 
 def create_dojo(request):
     Dojo.objects.create(name=request.POST["dojo"], city=request.POST["city"], state=request.POST["state"])
+ dojo3= Dojo.objects.get(id=3) 
+ dojo3.name="ezz"
+>>> dojo3.save()
 
 
 def create_ninja(request):
