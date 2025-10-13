@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a New Show</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-[50%] mx-auto  p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-semibold">Add a New Show</h1>
+            <a href="#" class="text-blue-600 underline text-sm">Go Back</a>
+        </div>
+
+        <form>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Title</label>
+                <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="flex gap-4 mb-4">
+                <div class="flex-1">
+                    <label class=" text-sm font-medium mb-2">Network</label>
+                    <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 ">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-sm font-medium mb-2">Release Date</label>
+                    <div class="flex items-center gap-2">
+                        <input type="text"  class="w-full border border-gray-300 rounded px-3 py-2 ">
+                        <button type="button" class="text-gray-600">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2">Description</label>
+                <textarea rows="4" class="w-full border border-gray-300 rounded px-3 py-2 "></textarea>
+            </div>
+
+            <div class="flex justify-center">
+                <button type="submit" class="bg-white border-2 border-gray-800 text-gray-800 px-8 py-2 rounded font-medium ">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
