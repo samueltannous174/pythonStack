@@ -7,6 +7,7 @@ def index(request):
 
 
 def register(request):
+    print(request.POST)
     if request.method == 'POST':
         errors = User.objects.basic_validator(request.POST)
         if errors:

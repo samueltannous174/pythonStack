@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-semibold">All Shows</h1>
+        <table class="table-auto w-full border-collapse">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 border-b border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">Id</th>
+                    <th class="px-6 py-3 border-b border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">Title</th>
+                    <th class="px-6 py-3 border-b border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">Network</th>
+                    <th class="px-6 py-3 border-b border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">Release Date</th>
+                    <th class="px-6 py-3 border-b border-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for show in all_shows %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{show.id}}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"><a href="/shows/{{show.id}}" class="text-blue-600 hover:text-blue-900">{{show.title}}</a></td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{show.network}}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{show.release_date}}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{show.description}}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"><a href="/shows/{{show.id}}" class="text-blue-600 hover:text-blue-900">Show</a></td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"><a href="/shows/{{show.id}}/edit" class="text-blue-600 hover:text-blue-900">Edit</a></td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"><a href="/shows/{{show.id}}/delete" class="text-red-600 hover:text-red-900">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        
+        </table>
+     
+        
+
+    </table>
+    </div>
+</html>
