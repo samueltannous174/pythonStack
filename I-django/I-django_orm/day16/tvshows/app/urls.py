@@ -9,5 +9,4 @@ urlpatterns=[
     path('shows/<int:show_id>/edits', views.editShows),
     path('shows', views.showAll),
     path('shows/<int:show_id>/delete', views.deleteShow),
-
 ]

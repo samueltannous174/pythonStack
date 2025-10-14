@@ -3,9 +3,8 @@ import re
 from django.contrib import messages
 import bcrypt
 class RegisterManager(models.Manager):
-    def basic_validator(self, postData):
+    def Register_validator(self, postData):
         print(postData)
-
         errors = {}
         if User.objects.filter(email=postData['email']).exists():
             errors["email"] = "Email already exists"
@@ -20,6 +19,16 @@ class RegisterManager(models.Manager):
         if postData['password'] != postData['confirmPassword']:
             errors["password"] = "Passwords do not match"
         return errors
+    
+    def login_validator(self, postData):
+        errors = {}
+        user = User.objects.filter(email=postData['email']).first()
+        if not user:
+            errors["email"] = "Email not found"
+        elif not bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
+            errors["password"] = "Invalid password"
+        return errors
+
   
       
 
@@ -52,19 +61,10 @@ def create_user(postData):
         password=hashed_pw
     )
 
-
-
-
-
 def login_user( postData):
-    try:
-        user = User.objects.get(email=postData['email'])
-    except User.DoesNotExist:
-        return None
+    user = User.objects.get(email=postData['email'])
+    return user
 
-    if bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
-        return user
-    return None
 
 
 

@@ -3,32 +3,39 @@ from django.contrib import messages
 from .models import create_user, login_user, User
 
 def index(request):
+    request.session.flush()
     return render(request, 'index.html')
 
 
 def register(request):
     if request.method == 'POST':
-        errors = User.objects.basic_validator(request.POST)
+        errors = User.objects.Register_validator(request.POST)
         if errors:
             for msg in errors.values():
                 messages.error(request, msg, extra_tags='register')
             return redirect('/')
+        
         create_user(request.POST)
         messages.success(request, "Registration successful! You can now log in.", extra_tags='register')
         return redirect('/')
     return redirect('/')
 
-
 def login(request):
     if request.method == 'POST':
+        errors = User.objects.login_validator(request.POST)
+        if errors:
+            for msg in errors.values():
+                messages.error(request, msg, extra_tags='login')
+            return redirect('/')
+
         user = login_user(request.POST)
-        if user:
-            request.session['name'] = user.first_name
-            messages.success(request, f"Welcome back, {user.first_name}!", extra_tags='login')
-            return redirect('/success')
-        messages.error(request, "Invalid email or password.", extra_tags='login')
-        return redirect('/')
+
+        request.session['name'] = user.first_name
+        messages.success(request, f"Welcome back, {user.first_name}!", extra_tags='login')
+        return redirect('/success')
+
     return redirect('/')
+
 
 
 def success(request):
