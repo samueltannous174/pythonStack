@@ -51,7 +51,6 @@ def editShows(request, show_id):
             for key, msg in errors.items():  
                 messages.error(request, msg, extra_tags='editShow')
             return redirect(f'/shows/{show_id}/edit')
-
         try:
             tvshow = update_show(show_id, request.POST)
             if tvshow:
