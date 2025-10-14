@@ -3,7 +3,6 @@ from django.shortcuts import redirect
 from .models import *
 from django.contrib import messages
 
-# Create your views here.
 
 def index(request):
     return redirect('/shows/addNew')

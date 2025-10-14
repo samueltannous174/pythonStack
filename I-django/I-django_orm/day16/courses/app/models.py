@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class Manager(models.Manager):
     def basic_validator(self, post_data):

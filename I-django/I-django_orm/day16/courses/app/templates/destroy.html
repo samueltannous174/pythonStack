@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Course Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center  w-full">
+    <div class="bg-white w-3/4 p-6  border-gray-800">
+        <h2 class="text-xl font-bold text-gray-900 mb-4  text-center">
+            Are you sure you want to delete the following course?
+        </h2>
+        
+        <div class="mb-6 space-y-2 text-2xl">
+            <div class="flex justify-center">
+                <span class="font-semibold text-gray-700 w-28">Name:</span>
+                <span class="text-gray-600">How to get more energy in the bootcamp</span>
+            </div>
+            <div class="flex justify-center gap-10">
+                <span class="font-semibold text-gray-700 w-28">Description:</span>
+                <span class="text-gray-600">Description about this course...</span>
+            </div>
+        </div>
+            <form class="flex gap-3 justify-center " action="/delete" method="POST">
+            {% csrf_token %}
+                 <a class="px-6 py-2 bg-gray-200 text-gray-800 font-semibold rounded ">
+                                    No
+            </a>
+            <button class="px-6 py-2 bg-red-800 text-white font-semibold rounded w-1/2 ">
+                Yes! I want to delete this
+            </button>
+        
+        </form>
+        
+        
+
+    </div>
+</body>
+</html>
