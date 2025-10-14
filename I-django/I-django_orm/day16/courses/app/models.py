@@ -22,7 +22,6 @@ class Course(models.Model):
         return self.name
 
 
-
 def add_course(Data):
     course = Course.objects.create(name=Data['title'], desc=Data['desc'])
     return course
