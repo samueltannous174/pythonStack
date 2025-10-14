@@ -16,6 +16,7 @@ def register(request):
             return redirect('/')
         
         create_user(request.POST)
+        
         messages.success(request, "Registration successful! You can now log in.", extra_tags='register')
         return redirect('/')
     return redirect('/')

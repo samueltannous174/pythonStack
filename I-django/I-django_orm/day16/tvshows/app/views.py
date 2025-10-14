@@ -9,7 +9,6 @@ def index(request):
     return redirect('/shows/addNew')
 
 def addNew(request):
-
     return render(request, 'index.html')
 
 def addNewShow(request):
@@ -21,13 +20,9 @@ def addNewShow(request):
                 messages.error(request, msg, extra_tags='addShow')
             return redirect('/shows/addNew')
 
-        try:
-            tvshow = add_show(request.POST)
-            if tvshow:
-                return redirect(f'/shows/{tvshow.id}')
-        except Exception as e:
-            messages.error(request, f"Error creating show: {str(e)}", extra_tags='addShow')
-            return redirect('/shows/addNew')
+        tvshow = add_show(request.POST)
+        return redirect(f'/shows/{tvshow.id}')
+
     return redirect('/shows/addNew')  
 
 def show(request, show_id):
@@ -51,13 +46,8 @@ def editShows(request, show_id):
             for key, msg in errors.items():  
                 messages.error(request, msg, extra_tags='editShow')
             return redirect(f'/shows/{show_id}/edit')
-        try:
-            tvshow = update_show(show_id, request.POST)
-            if tvshow:
-                return redirect(f'/shows/{tvshow.id}')
-        except Exception as e:
-            messages.error(request, f"Error updating show: {str(e)}", extra_tags='editShow')
-            return redirect(f'/shows/{show_id}/edit')
+        tvshow = update_show(show_id, request.POST)
+        return redirect(f'/shows/{tvshow.id}')
     return redirect(f'/shows/{show_id}')
 
 

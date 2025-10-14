@@ -3,10 +3,14 @@ from django.db import models
 class TvShowManager(models.Manager):
     def add_show_validator(self, postData):
         errors = {}
+
         
         if 'title' not in postData or len(postData['title']) < 2:
             errors["title"] = "Title should be at least 2 characters"
-        
+
+        elif self.filter(title=postData['title']).exists(): 
+            errors["title"] = "Title already exists"
+
         if 'network' not in postData or len(postData['network']) < 3:
             errors["network"] = "Network should be at least 3 characters"
         
@@ -20,10 +24,11 @@ class TvShowManager(models.Manager):
         
         if 'description' in postData and postData['description'] and len(postData['description']) < 10:
             errors["description"] = "Description should be at least 10 characters if provided"
-        
+        print(errors)
         return errors
+    
 class TvShow(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     network = models.CharField(max_length=255)
     release_date = models.DateField()
     description = models.TextField()
@@ -41,8 +46,10 @@ def add_show(postData):
     print(postData)
     tvShow= TvShow.objects.create(title=postData['title'], network=postData['network'], release_date=postData['release_date'], description=postData['description'])
     return tvShow
+
 def get_show(id):
     return TvShow.objects.get(id=id)
+
 def update_show(id, postData):
     tvShow = get_show(id)
     tvShow.title = postData['title']
@@ -51,12 +58,12 @@ def update_show(id, postData):
     tvShow.description = postData['description']
     tvShow.save()
     return tvShow
+
 def delete_show(id):
     tvShow = get_show(id)
     tvShow.delete()
 
 def get_shows():
     return TvShow.objects.all()
-# def edit_show(postData):
 
     
