@@ -84,9 +84,7 @@ def deleteBook(request,book_id):
 def updateBook(request,book_id):
     print(request.POST, book_id)
     update_book(request.POST, book_id)
-    context = {
-        "book":get_book(book_id),
-    }
+ 
     return redirect(f'/books/{book_id}')
 
 def unfavoriteBook(request,user_id,book_id):
