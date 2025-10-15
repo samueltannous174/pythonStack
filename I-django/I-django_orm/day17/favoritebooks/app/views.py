@@ -1,9 +1,14 @@
 from django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render
 from django.shortcuts import redirect
 from .models import *
 from django.contrib import messages
 
-from datetime import timedelta
+
+
+# Create your views here.
 
 def index(request):
     return render(request,'auth.html')
@@ -17,7 +22,7 @@ def register(request):
             return redirect('/')
         
         create_user(request.POST)
-        
+
         messages.success(request, "Registration successful! You can now log in.", extra_tags='register')
         return redirect('/')
     return redirect('/')
@@ -31,23 +36,23 @@ def login(request):
             return redirect('/')
 
         user = login_user(request.POST)
-        
+
         request.session['id'] = user.id
         request.session['name'] = user.first_name
         messages.success(request, f"Welcome back, {user.first_name}!", extra_tags='login')
         return redirect('/success')
-    
+
     return redirect('/')
 
-
 def success(request):
-    if 'name' not in request.session:
+    if 'id' not in request.session:
         messages.error(request, "Please log in first.", extra_tags='login')
         return redirect('/')
+    
     context={
-        'user_messages':get_all_messages()
+    "allBooks":get_all_books()
     }
-    return render(request, 'index.html', context)
+    return render(request, 'allBooks.html', context)
 
 
 def logout(request):
@@ -57,23 +62,14 @@ def logout(request):
     messages.success(request, "You have logged out successfully.", extra_tags='login')
     return redirect('/')
 
-def addMessage(request):
-    if request.method == 'POST':
-        errors = Message.objects.message_validator(request.POST)
-        if errors:
-            return redirect('/success')
-        add_message(request.POST, request.session['id'])
-    return redirect('/success')
+def addBook(request):
+    add_book(request.POST, request.session['id'])
+    return redirect('/')
 
-def addComment(request,message_id):
-    if request.method == 'POST':
-        errors = Comment.objects.comment_validator(request.POST)
-        if errors:
-            return redirect('/success')
-        add_comment(request.POST, request.session['id'], message_id)
-    return redirect('/success')
 
-def deleteMessage(request,message_id):
-    if request.method == 'POST':
-        delete_message(message_id)
-    return redirect('/success')
+def viewBook(request,book_id):
+
+    context = {
+        "book":get_book(book_id),
+    }
+    return render(request, 'book.html', context)
