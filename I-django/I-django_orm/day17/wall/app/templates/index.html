@@ -9,18 +9,42 @@
 <body>
     <nav class="flex justify-between p-5  items-center ">
         <h1 class="text-4xl"">CodingDojo Wall</h1>
+        <div class="flex gap-5">
+            <p class="text-2xl text-yellow-600">Welcome {{request.session.name}}</p>
         <a class="text-blue-700 underline" href="/logout">Logout</a>
+        </div>
     </nav>
     <hr class="w-full border-1 border-black">
-    <div class="flex flex-col w-4/5 mx-auto mt-10 ">
+    <form class="flex flex-col w-4/5 mx-auto mt-10 " action="/add_message" method="POST">
+        {% csrf_token %}
         <h1>Post Message</h1>
         <textarea name="message" class=" border-2 border-gray-700 mt-10" id="message" cols="30" rows="5"></textarea>
         <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded w-1/5 self-end mt-10" id="postMessage">Post Message</button>
-    </div>
-       <div class="flex flex-col  w-4/5 mx-auto ">
-        <h1>comments</h1>
-        <p class="ml-10"> comment comment comment comment comment</p>
-    </div>
+    </form>
+    {% for message in user_messages %}
+        <div class="flex flex-col w-4/5 mx-auto mt-10">
+            <h1 class="text-2xl text-purple-800">{{message.user.first_name }} - {{message.created_at}}</h1>
+            <p class="text-2xl  ml-10 mt-5">{{message.message}}</p>
+            <form action="/delete_message/{{message.id}}" method="POST">
+                {% csrf_token %}
+            <button class="bg-red-500 text-white font-bold py-2 px-4 rounded w-1/5 self-start mt-5" ">Delete</button>
+            </form>
+            {% for comment in message.comments.all %}
+            <div class="flex flex-col w-4/5 mt-10 ml-10 ">
+                <h1 class="text-2xl text-green-400">{{comment.user.first_name }} - {{comment.created_at}}</h1>
+                <p class="text-2xl  ml-10 mt-5">{{comment.comment}}</p>
+            </div>
+        {% endfor %}
+        </div>
  
+        <form class="flex flex-col w-4/5 mx-auto mt-10 " action="/add_comment/{{message.id}}" method="POST">
+            {% csrf_token %}
+            <h1>Post Comment</h1>
+            <textarea name="comment" class=" border-2 border-gray-700 mt-5"  cols="30" rows="5"></textarea>
+            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded w-1/5 self-end mt-5" ">Post Comment </button>
+    </form>
+    {% endfor %}
+    
+
 </body>
 </html>
