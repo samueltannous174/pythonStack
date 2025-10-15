@@ -63,8 +63,10 @@ def logout(request):
     return redirect('/')
 
 def addBook(request):
-    add_book(request.POST, request.session['id'])
-    return redirect('/')
+    if request.method == 'POST':
+        add_book(request.POST, request.session['id'])
+        return redirect('/success')
+    return redirect('/success')
 
 
 def viewBook(request,book_id):
@@ -74,7 +76,9 @@ def viewBook(request,book_id):
     return render(request, 'book.html', context)
 
 def deleteBook(request,book_id):
-    delete_book(book_id)
+    if request.method == 'POST':
+        delete_book(book_id)
+        return redirect('/success')
     return redirect('/success')
 
 def updateBook(request,book_id):
@@ -83,4 +87,18 @@ def updateBook(request,book_id):
     context = {
         "book":get_book(book_id),
     }
-    return render(request, 'book.html', context)
+    return redirect(f'/books/{book_id}')
+
+def unfavoriteBook(request,user_id,book_id):
+    if request.method == 'POST':
+        unfavorite_book(user_id,book_id)
+        redirect('/success')
+    return redirect('/success')
+
+def favoriteBook(request,user_id,book_id):
+    if request.method == 'POST':
+        favorite_book(user_id,book_id)
+        print(request.POST)
+        print(user_id,book_id)
+        return redirect(f'/books/{book_id}')
+    return redirect('/success')

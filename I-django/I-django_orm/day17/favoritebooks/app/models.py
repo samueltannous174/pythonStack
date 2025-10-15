@@ -80,9 +80,16 @@ def update_book(postData, id ):
 def add_book(postData, user_id): 
     user = User.objects.get(id=user_id)
     book = Book.objects.create(title=postData['title'], desc=postData['desc'], uploaded_by=user)
+    book.users_who_like.add(user)
     return book
-def add_like(postData, user_id):
+
+def favorite_book(user_id, book_id):
     user = User.objects.get(id=user_id)
-    book = Book.objects.get(id=postData['book_id'])
-    user.favorites.add(book)
+    book = Book.objects.get(id=book_id)
+    user.liked_books.add(book)
+    return book
+def unfavorite_book(user_id, book_id):
+    user = User.objects.get(id=user_id)
+    book = Book.objects.get(id=book_id)
+    user.liked_books.remove(book)
     return book

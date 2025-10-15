@@ -26,8 +26,11 @@
  <form action="/update_book/{{ book.id }}" class="flex flex-col gap-3" method="POST"> 
     {% csrf_token %}
       <textarea
-        class="border-4 border-black px-3 py-1 font-bold text-xl bg-white w-fit"
+        class="border-4 border-black px-3 py-1 font-bold text-xl bg-white w-2/5 "
         rows="1"
+        {% if request.session.id != book.uploaded_by.id %}
+        readonly
+        {% endif %}
         placeholder="{{ book.title }}"
         name="title"
       >
@@ -37,7 +40,6 @@
 
       <p class="text-2xl">
         Uploaded By: {{ book.uploaded_by.first_name }}
-        {{ book.uploaded_by.last_name }}
       </p>
       <p class="text-2xl">Created at: {{ book.created_at }}</p>
       <p class="text-2xl">Last Updated: {{ book.updated_at }}</p>
@@ -81,9 +83,16 @@
     <div class="w-1/5 mx-auto mt-9 p-6 rounded-lg bg-white shadow-sm flex flex-col gap-4">
       <p class="text-2xl font-semibold">Users who like this book:</p>
       {% for user in book.users_who_like.all %}
-      <p class="text-xl text-yellow-600 ml-4">
+      <div class="flex gap-2">
+        <p class="text-xl text-yellow-600 ml-4">
         {{ user.first_name }} {{ user.last_name }}
       </p>
+    {% if request.session.id == book.uploaded_by.id %}
+      <a href="/unfavorite/{{user.id}}/{{book.id}}" class="text-blue-600 underline ml-4 text-xl">unfavorite</a>
+    {% endif %}
+
+      </div>
+   
       {% empty %}
       <p class="text-xl text-gray-500 ml-4">No likes yet.</p>
       {% endfor %}

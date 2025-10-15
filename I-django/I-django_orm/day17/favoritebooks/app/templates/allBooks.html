@@ -18,7 +18,7 @@
     <div class="w-[80%] mx-auto  rounded-lg  p-6 mt-9">
       
         <div class="flex gap-8 justify-between">
-            <div class="w-[40%]">
+            <div class="w-[40%] ">
                 
                 <form class="space-y-3  " action="/add_book" method="POST">
                     {% csrf_token %}
@@ -43,7 +43,10 @@
                     {% for book in allBooks %}
                     <a class="text-blue-600 underline text-3xl mt-10" href="/books/{{book.id}}"> {{book.title}} </a>
                     <p class="text-3xl">added by: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
-                    <a class="text-blue-600 underline text-3xl" href="/book/{{book.id}}"> Add To Favorites </a>
+                    <form action="favorite/{{request.session.id}}/{{book.id}}" method="post">
+                    {% csrf_token %}
+                    <button class="text-blue-600 underline text-3xl" > Add To Favorites </button>
+                    </form>
                     {% endfor %}
                 </div>
             </div>
