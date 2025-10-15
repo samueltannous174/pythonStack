@@ -66,18 +66,20 @@ def logout(request):
 
 def addMessage(request):
     if request.method == 'POST':
+        errors = Message.objects.message_validator(request.POST)
+        if errors:
+            return redirect('/success')
         add_message(request.POST, request.session['id'])
     return redirect('/success')
 def addComment(request,message_id):
     if request.method == 'POST':
+        errors = Comment.objects.comment_validator(request.POST)
+        if errors:
+            return redirect('/success')
         add_comment(request.POST, request.session['id'], message_id)
     return redirect('/success')
 
 def deleteMessage(request,message_id):
     if request.method == 'POST':
-
-
-        
         delete_message(message_id)
-        
     return redirect('/success')

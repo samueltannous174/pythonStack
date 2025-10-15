@@ -31,9 +31,20 @@ class RegisterManager(models.Manager):
         elif not bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
             errors["password"] = "Invalid password"
         return errors
-
-
-
+class CommentManager(models.Manager):
+    def comment_validator(self, postData):
+        errors = {}
+        if len(postData['comment']) < 1:
+            errors["cooment"] = "comment should be at least 1 characters"
+        return errors
+    
+class MessageManager(models.Manager):
+    def message_validator(self, postData):
+        errors = {}
+        if len(postData['message']) < 1:
+            errors["message"] = "message should be at least 1 characters"
+        return errors
+    
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -56,6 +67,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, related_name="messages", on_delete=models.CASCADE)
+    objects = MessageManager()
     def __str__(self):
         return f"{self.message}"
 
@@ -66,6 +78,7 @@ class Comment(models.Model):
     message = models.ForeignKey(Message, related_name="comments", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="comments", on_delete=models.CASCADE)
     message = models.ForeignKey(Message, related_name="comments", on_delete=models.CASCADE)
+    objects = CommentManager()
     def __str__(self):
         return f"{self.comment}"
 
