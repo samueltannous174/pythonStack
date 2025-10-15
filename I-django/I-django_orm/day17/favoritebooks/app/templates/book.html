@@ -1,52 +1,95 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
-    <body>
-        <nav class="flex justify-between p-5  items-center ">
-            <h1 class="text-4xl"">CodingDojo Wall</h1>
-            <div class="flex gap-5">
-                <p class="text-2xl text-yellow-600">Welcome {{request.session.name}}</p>
-            <a class="text-blue-700 underline" href="/logout">Logout</a>
-            </div>
-        </nav>
-        <hr class="w-full border-1 border-black">
-    
-        <div class="w-[80%] mx-auto  rounded-lg  p-6 mt-9 flex flex-col gap-4">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodingDojo Wall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
 
+  <body class="bg-gray-50 text-gray-900">
+    <nav class="flex justify-between items-center p-5 bg-white shadow-md">
+      <h1 class="text-4xl font-bold">CodingDojo Wall</h1>
+      <div class="flex items-center gap-5">
+        <p class="text-2xl text-yellow-600">
+          Welcome {{ request.session.name }}
+        </p>
+        <a href="/logout" class="text-blue-700 underline hover:text-blue-900">
+          Logout
+        </a>
+      </div>
+    </nav>
 
-    <textarea class="border-4 border-black px-3 py-1 font-bold text-xl bg-white w-1/5 " rows="1">Title: {{book.title}}</textarea>
-            <p  class="text-2xl ">Uploaded By: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
-            <p class="text-2xl"> Created at: {{book.created_at}}</p>
-            <p class="text-2xl">Last Updated: {{book.updated_at}} </p>
-            <div class="flex gap-3">
-                <p>Description:</p>
-            {% if request.session.id == book.uploaded_by.id %} 
-            <div class="flex flex-col">
-            <form>
-            <textarea name="desc" id="desc" cols="30" rows="10" placeholder="Description" class="border-2 border-black"></textarea>
-            </form>
-            <div class="flex gap-3">
-            <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded  self-end mt-10" >Update</button>
-            <button class="bg-red-500 text-white font-bold py-2 px-4 rounded  self-end mt-10" >Delete</button>
+    <hr class="border border-black my-2" />
+<div class="flex gap-4">
+    <div class="w-2/5 mx-auto mt-9 p-6 rounded-lg bg-white shadow-sm flex flex-col gap-4">
+ <form action="/update_book/{{ book.id }}" class="flex flex-col gap-3" method="POST"> 
+    {% csrf_token %}
+      <textarea
+        class="border-4 border-black px-3 py-1 font-bold text-xl bg-white w-fit"
+        rows="1"
+        placeholder="{{ book.title }}"
+        name="title"
+      >
+        {{ book.title }}
+       </textarea
+      >
 
+      <p class="text-2xl">
+        Uploaded By: {{ book.uploaded_by.first_name }}
+        {{ book.uploaded_by.last_name }}
+      </p>
+      <p class="text-2xl">Created at: {{ book.created_at }}</p>
+      <p class="text-2xl">Last Updated: {{ book.updated_at }}</p>
 
-            </div>
+      <div class="flex flex-col gap-3">
+        <p class="text-2xl font-semibold">Description:</p>
+
+        {% if request.session.id == book.uploaded_by.id %}
+        <div class="flex flex-col gap-3">
+
+          <textarea
+            name="desc"
+            id="desc"
+            cols="30"
+            rows="6"
+            placeholder="Description"
+            class="border-2 border-black p-2 text-lg"
+          > </textarea>
+          <div class="flex gap-3 mt-4">
+            <button
+              type="submit"
+              class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition"
+            >
+              Update
+            </button>
+        </form>
+
+           <form action="/delete_book/{{ book.id }}" method="POST"> 
+            {% csrf_token %} 
+            <button type="submit" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition">Delete</button>
+           </form>
         
-            {% else %}
-            <p class="text-2xl "> 
-            Description: {{book.desc}}
-            </p>
-            {% endif %}
-            </div>
-            {% for user in book.users_who_like.all %} 
-                <p class="text-2xl text-yellow-600"> {{user.first_name}} {{user.last_name}} </p>
-            {% endfor %}
+          </div>
         </div>
+        {% else %}
+        <p class="text-2xl">{{ book.desc }}</p>
+        {% endif %}
+      </div>
+ 
+    </div>
+    <div class="w-1/5 mx-auto mt-9 p-6 rounded-lg bg-white shadow-sm flex flex-col gap-4">
+      <p class="text-2xl font-semibold">Users who like this book:</p>
+      {% for user in book.users_who_like.all %}
+      <p class="text-xl text-yellow-600 ml-4">
+        {{ user.first_name }} {{ user.last_name }}
+      </p>
+      {% empty %}
+      <p class="text-xl text-gray-500 ml-4">No likes yet.</p>
+      {% endfor %}
 
-    </body>
-    </html>
+    </div>
+ </div>
+
+  </body>
+</html>

@@ -69,11 +69,18 @@ def get_all_books():
     return Book.objects.all()
 def get_book(id):
     return Book.objects.get(id=id)
+def delete_book(id):
+    return Book.objects.get(id=id).delete()
+def update_book(postData, id ):
+    book = Book.objects.get(id=id)
+    book.title = postData['title']
+    book.desc = postData['desc']
+    book.save()
+    return book
 def add_book(postData, user_id): 
     user = User.objects.get(id=user_id)
     book = Book.objects.create(title=postData['title'], desc=postData['desc'], uploaded_by=user)
     return book
- 
 def add_like(postData, user_id):
     user = User.objects.get(id=user_id)
     book = Book.objects.get(id=postData['book_id'])
