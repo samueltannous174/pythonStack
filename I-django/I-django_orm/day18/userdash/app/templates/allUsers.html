@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="mx-auto w-4/5">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100 whitespace-nowrap">
+          <tr>
+            <th class="px-4 py-4 text-left text-xs font-semibold text-slate-900 uppercase tracking-wider">
+              Name
+            </th>
+            <th class="px-4 py-4 text-left text-xs font-semibold text-slate-900 uppercase tracking-wider">
+              Email
+            </th>
+            <th class="px-4 py-4 text-left text-xs font-semibold text-slate-900 uppercase tracking-wider">
+              Role
+            </th>
+            <th class="px-4 py-4 text-left text-xs font-semibold text-slate-900 uppercase tracking-wider">
+              Joined At
+            </th>
+            <th class="px-4 py-4 text-left text-xs font-semibold text-slate-900 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+
+        <tbody class="bg-white divide-y divide-gray-200 whitespace-nowrap">
+            {%for user in users%}
+            <tr>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    {{user.first_name}} {{user.last_name}}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    {{user.email}}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    {%if user.level == 9%}Admin{%else%}User{%endif%}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    {{user.created_at}}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    <form action="/user/{{user.id}}/edit" method="get">
+                        {% csrf_token %}
+                        <button type="submit" class="text-blue-600 hover:text-blue-900">Edit</button>
+                    </form>
+                    <form action="/user/{{user.id}}/delete" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+      </table>
+    </div>
+        </div>
+    
+</body>
+</html>
