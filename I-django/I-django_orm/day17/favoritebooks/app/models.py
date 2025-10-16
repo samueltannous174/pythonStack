@@ -32,6 +32,14 @@ class RegisterManager(models.Manager):
 
         return errors
 
+class BookManager(models.Manager):
+    def book_validator(self, postData):
+        errors = {}
+        if len(postData['title']) < 1:
+            errors["title"] = "Title should be at least 1 characters"
+        if len(postData['desc']) < 5:
+            errors["desc"] = "Description should be at least 5 characters"
+        return errors
 
 
 class User(models.Model):
@@ -53,6 +61,7 @@ class Book(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     uploaded_by = models.ForeignKey(User, related_name="books_uploaded", on_delete=models.CASCADE)
     users_who_like  = models.ManyToManyField(User, related_name="liked_books")
+    objects = BookManager()
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -77,6 +86,7 @@ def update_book(postData, id ):
     book.desc = postData['desc']
     book.save()
     return book
+
 def add_book(postData, user_id): 
     user = User.objects.get(id=user_id)
     book = Book.objects.create(title=postData['title'], desc=postData['desc'], uploaded_by=user)

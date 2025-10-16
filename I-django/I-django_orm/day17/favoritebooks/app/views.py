@@ -64,6 +64,11 @@ def logout(request):
 
 def addBook(request):
     if request.method == 'POST':
+        errors = Book.objects.book_validator(request.POST)
+        if errors:
+            for msg in errors.values():
+                messages.error(request, msg)
+            return redirect('/success')
         add_book(request.POST, request.session['id'])
         return redirect('/success')
     return redirect('/success')
@@ -82,16 +87,20 @@ def deleteBook(request,book_id):
     return redirect('/success')
 
 def updateBook(request,book_id):
-    print(request.POST, book_id)
-    update_book(request.POST, book_id)
- 
+    if request.method == 'POST':
+        errors = Book.objects.book_validator(request.POST)
+        if errors:
+            for msg in errors.values():
+                messages.error(request, msg)
+            return redirect(f'/books/{book_id}')
+        update_book(request.POST, book_id)
     return redirect(f'/books/{book_id}')
 
 def unfavoriteBook(request,user_id,book_id):
     if request.method == 'POST':
         unfavorite_book(user_id,book_id)
-        redirect('/success')
-    return redirect('/success')
+        return redirect(f'/books/{book_id}')
+    return redirect(f'/books/{book_id}')
 
 def favoriteBook(request,user_id,book_id):
     if request.method == 'POST':
@@ -100,3 +109,4 @@ def favoriteBook(request,user_id,book_id):
         print(user_id,book_id)
         return redirect(f'/books/{book_id}')
     return redirect('/success')
+
