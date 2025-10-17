@@ -50,7 +50,8 @@ def success(request):
         return redirect('/')
     
     context={
-    "allBooks":get_all_books()
+    "allBooks":get_all_books(),
+    "userFavorites" : get_user_favorite_books(request.session['id'])
     }
     return render(request, 'allBooks.html', context)
 

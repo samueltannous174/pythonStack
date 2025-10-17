@@ -103,3 +103,6 @@ def unfavorite_book(user_id, book_id):
     book = Book.objects.get(id=book_id)
     user.liked_books.remove(book)
     return book
+
+def get_user_favorite_books(user_id):
+     return Book.objects.filter(users_who_like__id=user_id).values_list('id', flat=True)
