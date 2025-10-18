@@ -56,12 +56,6 @@ def success(request):
     return render(request, 'allBooks.html', context)
 
 
-def logout(request):
-    request.session.flush()
-    storage = messages.get_messages(request)
-    storage.used = True
-    messages.success(request, "You have logged out successfully.", extra_tags='login')
-    return redirect('/')
 
 def addBook(request):
     if request.method == 'POST':
