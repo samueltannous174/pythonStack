@@ -2,7 +2,7 @@
 Description=gunicorn daemon
 After=network.target
 [Service]
-User=ubuntu/home/ubuntu/pythonStack/I-django/I-django_orm/day17/favoritebooks/django_env/gunicorn --workers 3 --bind unix:/home/ubuntu/pythonStack/I-django/I-django_orm/day17/favoritebooks/app.sock favoritebooks.wsgi:application
+User=ubuntu/home/ubuntu/pythonStack/I-django/I-django_orm/day17/favoritebooks/django_env/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/pythonStack/I-django/I-django_orm/day17/favoritebooks/app.sock favoritebooks.wsgi:application
 Group=www-data
 WorkingDirectory=/home/ubuntu/pythonStack/I-django/I-django_orm/day17/favoritebooks
 ExecStart=
