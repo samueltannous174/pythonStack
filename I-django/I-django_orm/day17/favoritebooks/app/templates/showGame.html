@@ -66,31 +66,30 @@
 
       <div class="w-1/5 mx-auto mt-9 p-6 rounded-lg bg-white shadow-sm flex flex-col gap-4">
         <p class="text-2xl font-semibold">Users who like this game:</p>
+  {% if game.players_liked.all %}
+    <table class="w-full border border-gray-400 border-spacing-2">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="text-left py-2 px-3 text-sm font-semibold">Id</th>
+          <th class="text-left py-2 px-3 text-sm font-semibold">Player Name</th>
+          <th class="text-left py-2 px-3 text-sm font-semibold">Rating</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for user in game.players_liked.all %}
- <table class="w-full border-spacing-2  border border-gray-400">
-                    <thead>
-                        <tr class="bg-gray-100" >
-                            <th class="text-left py-2 px-3 text-sm font-semibold"> Id </th>
-                            <th class="text-left py-2 px-3 text-sm font-semibold">Player Name</th>
-                            <th class="text-left py-2 px-3 text-sm font-semibold"> Rating</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                 {% for user in game.players_liked.all %}
-                        <tr class="border-b">
-                            <td class="py-2 px-3"><a href="/game/{{game.id}}" class="text-blue-600 underline ">{{user.id}}</a></td>
-                            <td class="py-2 px-3">{{user.first_name}} {{user.last_name}}</td>
-                            <td class="py-2 px-3">{{game.ratings}} </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-      
-        {% empty %}
-        <p class="text-xl text-gray-500 ml-4">No likes yet.</p>
+          <tr class="border-b">
+            <td class="py-2 px-3">
+              <a href="/game/{{ game.id }}" class="text-blue-600 underline">{{ user.id }}</a>
+            </td>
+            <td class="py-2 px-3">{{ user.first_name }} {{ user.last_name }}</td>
+            <td class="py-2 px-3">{{ game.ratings }}</td>
+          </tr>
         {% endfor %}
-      </div>
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-xl text-gray-500 ml-4">No likes yet.</p>
+  {% endif %}
     </div>
   </body>
 </html>
