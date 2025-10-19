@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Books/Authors with Templates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+       <nav class="flex justify-between items-center p-5 bg-white shadow-md">
+        <img src="{{ request.session.avatar}}" alt="logo" class="w-12 h-12">
+      <div class="flex items-center gap-5">
+        <p class="text-2xl text-yellow-600">
+          Welcome {{ request.session.name }}
+        </p>
+        <a href="/logout" class="text-blue-700 underline hover:text-blue-900">
+          Logout
+        </a>
+      </div>
+    </nav>
+    <hr class="w-full border-1 border-black">
+    <div class="w-[80%] mx-auto  rounded-lg  p-6 mt-9">
+        <div class="flex gap-8 justify-between">
+            <div class="w-[40%]">
+                <form class="space-y-3  " action="/add_game" method="POST">
+                    {% csrf_token %}
+                    <div class="flex gap-4  items-center  justify-between ">
+                        <label class=" text-sm font-medium mb-1">Title</label>
+                        <input type="text" name="game" class="w-[50%] px-3 py-2   rounded border-black  border-4">
+                    </div>
+                    <div class="flex gap-4  items-center  justify-between ">
+                        <label class=" text-sm font-medium mb-1">Genere</label>
+                        <input type="text" name="genere" class="w-[50%] px-3 py-2  rounded border-black  border-4">
+                    </div>
+                    <div class="flex gap-4  items-center  justify-between ">
+                        <label class=" text-sm font-medium mb-1">Release Date</label>
+                        <input type="text" name="date" class="w-[50%] px-3 py-2  rounded border-black  border-4">
+                    </div>
+
+                    <div class="flex gap-4 align-center items-center justify-between   ">
+                        <label class=" text-sm font-medium mb-1">Description</label>
+                        <input type="text" name="desc" class=" h-[100px] w-[50%] px-3 py-2 border-black rounded border-4">
+                    </div>
+                    <button type="submit" class="px-4 py-2 bg-gray-200  font-medium">Create a Game</button>
+                </form>
+                {% if messages %}
+                    <ul class="mt-4">
+                        {% for message in messages %}
+                            <li class="text-red-600">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class=" w-[40%]">
+                <table class="w-full border-spacing-2  border border-gray-400">
+                    <thead>
+                        <tr class="bg-gray-100" >
+                            <th class="text-left py-2 px-3 text-sm font-semibold"><a href="/sort"> Game </a></th>
+                            <th class="text-left py-2 px-3 text-sm font-semibold">Genere</th>
+                            <th class="text-left py-2 px-3 text-sm font-semibold">Release Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for game in all_games %}
+                        <tr class="border-b">
+                            <td class="py-2 px-3"><a href="/game/{{game.id}}" class="text-blue-600 underline ">{{game.name}}</a></td>
+                            <td class="py-2 px-3">{{game.genere}}</td>
+                            <td class="py-2 px-3">{{game.release_date}} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
