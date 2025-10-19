@@ -92,9 +92,17 @@ def showGame(request, game_id):
     return render(request, 'showGame.html', context)
 
 def addToFavorites(request, game_id):
-    add_review( request.POST,request.session['id'], game_id)
-    add_favorites(request.session['id'], game_id)   
-    return redirect(f'/game/{game_id}')
+    if request.method == 'POST':
+
+        if 'id' not in request.session:
+            messages.error(request, "You must be logged in to add to favorites.")
+            return redirect('/')
+
+        add_review( request.POST,request.session['id'], game_id)
+        add_favorites(request.session['id'], game_id)   
+        return redirect(f'/game/{game_id}')
+
+    return redirect('/  ')
 
 def get_who_likes_game(request, game_id):
     context = {
@@ -122,10 +130,11 @@ def updateGame2(request, game_id):
                 for msg in errors.values():
                     messages.error(request, msg)
                 return redirect(f'/game/{game_id}')
+            
             update_game(request.POST, game_id)
         
         return redirect(f'/game/{game_id}')
-        
+
         
         
 

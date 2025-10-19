@@ -165,9 +165,11 @@ def who_likes(user_id, game_id):
 
 
 def update_game(postData, game_id):
+    print("entered")
     game = Game.objects.get(id=game_id)
+
     date = datetime.strptime(postData['date'], "%d-%b-%Y").date()
-    game.game = postData['game']
+    game.name = postData['game']
     game.genere = postData['genere']
     game.release_date = date
     game.description = postData['description']
