@@ -21,12 +21,10 @@ def register(request):
                 messages.error(request, msg, extra_tags='register')
             return redirect('/')
         
-        user = create_user(request.POST)
-        request.session['id'] = user.id
-        request.session['name'] = user.first_name
-        request.session['avatar'] = user.avatar
+        create_user(request.POST)
+
         messages.success(request, "Registration successful! You can now log in.", extra_tags='register')
-        return redirect('/success')
+        return redirect('/')
     return redirect('/')
 
 def login(request):
@@ -41,7 +39,6 @@ def login(request):
 
         request.session['id'] = user.id
         request.session['name'] = user.first_name
-        request.session['avatar'] = user.avatar
         messages.success(request, f"Welcome back, {user.first_name}!", extra_tags='login')
         return redirect('/success')
 
@@ -51,19 +48,13 @@ def success(request):
     if 'id' not in request.session:
         messages.error(request, "Please log in first.", extra_tags='login')
         return redirect('/')
-
-    context = {
-        'all_games': get_all_games(),
-    }
     
-
-    return render(request, 'allGames.html', context)
-
-def sortByGenere(request):
-    context = {
-        'all_games': sort_games_by_genre(),
+    context={
+    "allBooks":get_all_books(),
+    "userFavorites" : get_user_favorite_books(request.session['id'])
     }
-    return render(request, 'allGames.html', context)
+    return render(request, 'allBooks.html', context)
+
 
 def logout(request):
     request.session.flush()
@@ -72,72 +63,51 @@ def logout(request):
     messages.success(request, "You have logged out successfully.", extra_tags='login')
     return redirect('/')
 
-
-def addGame(request):
+def addBook(request):
     if request.method == 'POST':
-        errors = Game.objects.game_validator(request.POST)
+        errors = Book.objects.book_validator(request.POST)
         if errors:
             for msg in errors.values():
                 messages.error(request, msg)
             return redirect('/success')
-        create_game(request.POST, request.session['id'])
+        add_book(request.POST, request.session['id'])
         return redirect('/success')
     return redirect('/success')
 
 
-def showGame(request, game_id):
+def viewBook(request,book_id):
     context = {
-        'game': get_game(game_id)
+        "book":get_book(book_id),
     }
-    return render(request, 'showGame.html', context)
+    return render(request, 'book.html', context)
 
-def addToFavorites(request, game_id):
+def deleteBook(request,book_id):
     if request.method == 'POST':
-
-        if 'id' not in request.session:
-            messages.error(request, "You must be logged in to add to favorites.")
-            return redirect('/')
-
-        add_review( request.POST,request.session['id'], game_id)
-        add_favorites(request.session['id'], game_id)   
-        return redirect(f'/game/{game_id}')
-
-    return redirect('/  ')
-
-def get_who_likes_game(request, game_id):
-    context = {
-        'who_likes_game': get_who_likes_game(game_id)
-    }
-    return render(request, 'showGame.html', context)
-
-
-
-
-def updateGame(request, game_id):
-    print(game_id)
-    request.session['game_id'] = game_id
-    game = Game.objects.get(id=game_id)
-    context = {
-        'game': game
-    }
-    return render(request, 'edit.html', context)
-
-def updateGame2(request, game_id):
-        print(request.POST)
-        if request.method == 'POST':
-            errors = Game.objects.game_validator(request.POST)
-            if errors:
-                for msg in errors.values():
-                    messages.error(request, msg)
-                return redirect(f'/game/{game_id}')
-            
-            update_game(request.POST, game_id)
-        
-        return redirect(f'/game/{game_id}')
-
-        
-        
-
-def deleteGame(request, game_id):
-    delete_game(game_id)
+        delete_book(book_id)
+        return redirect('/success')
     return redirect('/success')
+
+def updateBook(request,book_id):
+    if request.method == 'POST':
+        errors = Book.objects.book_validator(request.POST)
+        if errors:
+            for msg in errors.values():
+                messages.error(request, msg)
+            return redirect(f'/books/{book_id}')
+        update_book(request.POST, book_id)
+    return redirect(f'/books/{book_id}')
+
+def unfavoriteBook(request,user_id,book_id):
+    if request.method == 'POST':
+        unfavorite_book(user_id,book_id)
+        return redirect(f'/books/{book_id}')
+    return redirect(f'/books/{book_id}')
+
+def favoriteBook(request,user_id,book_id):
+    if request.method == 'POST':
+        favorite_book(user_id,book_id)
+        print(request.POST)
+        print(user_id,book_id)
+        return redirect(f'/books/{book_id}')
+    return redirect('/success')
+

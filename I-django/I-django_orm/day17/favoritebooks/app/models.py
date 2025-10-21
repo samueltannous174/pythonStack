@@ -2,10 +2,7 @@ from django.db import models
 import bcrypt
 import re
 from datetime import datetime, timedelta
-
-from datetime import datetime
-from zoneinfo import ZoneInfo  
-
+from django.utils import timezone
 
 
 class RegisterManager(models.Manager):
@@ -14,9 +11,9 @@ class RegisterManager(models.Manager):
         errors = {}
         if User.objects.filter(email=postData['email']).exists():
             errors["email"] = "Email already exists"
-        if not postData['firstName'] or len(postData['firstName']) < 4:
+        if len(postData['firstName']) < 2:
             errors["firstName"] = "First name should be at least 2 characters"
-        if not postData['lastName'] or len(postData['lastName']) < 4:
+        if len(postData['lastName']) < 2:
             errors["lastName"] = "Last name should be at least 2 characters"
         if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', postData['email']):
             errors["email"] = "Email should be at least 2 characters"
@@ -24,21 +21,8 @@ class RegisterManager(models.Manager):
             errors["password"] = "Password should be at least 8 characters"
         if postData['password'] != postData['confirmPassword']:
             errors["password"] = "Passwords do not match"
-
-        date_regex = r"^\d{4}\-(0[1-9]|1[0-2])\-(0[1-9]|[12][0-9]|3[01])$"
-        if not re.match(date_regex, postData['date']):
-            errors["date"] = "Birth date must be in format YYYY-MM-DD"
-        else:
-            now = datetime.now(ZoneInfo('UTC'))  
-            birthday = datetime.strptime(postData['date'], "%Y-%m-%d")
-            birthday = birthday.replace(tzinfo=ZoneInfo('UTC'))
-            age = now - birthday
-            years = age.days // 365
-            if years < 18: 
-                errors["date"] = "User must be older than 18"
-
         return errors
-
+    
     def login_validator(self, postData):
         errors = {}
         user = User.objects.filter(email=postData['email']).first()
@@ -47,135 +31,78 @@ class RegisterManager(models.Manager):
             errors["login"] = "Invalid email or password"
 
         return errors
-    
 
-month_dict = {
-            "jan": 1,
-            "feb": 2,
-            "mar": 3,
-            "apr": 4,
-            "may": 5,
-            "jun": 6,
-            "jul": 7,
-            "aug": 8,
-            "sep": 9,
-            "oct": 10,
-            "nov": 11,
-            "dec": 12
-        }
-
-class GameManager(models.Manager):
-
-  def game_validator(self, postData):
-    print(postData)
-    errors = {}
-    
-    if not postData['game'] or len(postData['game']) < 2:
-        errors["game"] = "Name should be at least 2 characters"
-    
-    date_format = r"^\d{1,2}-(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)-\d{4}$|^\d{1,2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\d{4}$"
-    if not re.match(date_format, postData['date']):
-        errors["date"] = "Release date must be in format DD-MMM-YYYY with month in word"
-    
-    
-    return errors
+class BookManager(models.Manager):
+    def book_validator(self, postData):
+        errors = {}
+        if len(postData['title']) < 1:
+            errors["title"] = "Title should be at least 1 characters"
+        if len(postData['desc']) < 5:
+            errors["desc"] = "Description should be at least 5 characters"
+        return errors
 
 
-
-class User(models.Model):
+class News(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
-    date = models.DateField()
-    avatar = models.CharField(max_length=255, default="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = RegisterManager()
+    objects= RegisterManager()
 
-class Game (models.Model):
-    name = models.CharField(max_length=255)
-    genere = models.CharField(max_length=255)
-    release_date = models.DateField()
-    description = models.TextField()
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    desc = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, related_name="games", on_delete=models.CASCADE)
-    players_liked = models.ManyToManyField(User, related_name="liked_games")
-    objects = GameManager()
+    uploaded_by = models.ForeignKey(User, related_name="books_uploaded", on_delete=models.CASCADE)
+    users_who_like  = models.ManyToManyField(User, related_name="liked_books")
+    objects = BookManager()
 
-class Review(models.Model):
-    rating = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, related_name="reviews", on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, related_name="reviews", on_delete=models.CASCADE)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-
-
-
-
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
     
 def create_user(postData):
     hashed_pw = bcrypt.hashpw(postData['password'].encode(), bcrypt.gensalt()).decode()
-    print(postData['date'])
-    return User.objects.create( first_name=postData['firstName'], last_name=postData['lastName'], email=postData["email"], password=hashed_pw, date=postData['date'], avatar=postData['avatar'])
+    return User.objects.create( first_name=postData['firstName'], last_name=postData['lastName'], email=postData["email"], password=hashed_pw)
 
 def login_user( postData):
     user = User.objects.get(email=postData['email'])
     return user
 
+def get_all_books():
+    return Book.objects.all()
+def get_book(id):
+    return Book.objects.get(id=id)
+def delete_book(id):
+    return Book.objects.get(id=id).delete()
+def update_book(postData, id ):
+    book = Book.objects.get(id=id)
+    book.title = postData['title']
+    book.desc = postData['desc']
+    book.save()
+    return book
 
-def create_game(postData, user_id):
+def add_book(postData, user_id): 
     user = User.objects.get(id=user_id)
-    date = datetime.strptime(postData['date'], "%d-%b-%Y").date()
-    print(date)
-    return Game.objects.create(name=postData['game'], genere=postData['genere'], release_date=date, description=postData['desc'], user=user)
+    book = Book.objects.create(title=postData['title'], desc=postData['desc'], uploaded_by=user)
+    book.users_who_like.add(user)
+    return book
 
-
-def get_all_games():
-    return Game.objects.all()
-
-def sort_games_by_genre():
-    return Game.objects.all().order_by('genere')
-
-def get_game(id):
-    return Game.objects.get(id=id)
-
-def get_who_likes_game(game_id):
-    game = Game.objects.get(id=game_id)
-    return game.players_liked.all()
-
-def add_review(postData,user_id, game_id):
+def favorite_book(user_id, book_id):
     user = User.objects.get(id=user_id)
-    game = Game.objects.get(id=game_id)
-    review = Review.objects.create(rating=postData['rating'], user=user, game=game)
-    return review
-
-def add_favorites(user_id, game_id):
+    book = Book.objects.get(id=book_id)
+    user.liked_books.add(book)
+    return book
+def unfavorite_book(user_id, book_id):
     user = User.objects.get(id=user_id)
-    game = Game.objects.get(id=game_id)
-    game.players_liked.add(user)
+    book = Book.objects.get(id=book_id)
+    user.liked_books.remove(book)
+    return book
 
-def who_likes(user_id, game_id):
-    user = User.objects.get(id=user_id)
-    game = Game.objects.get(id=game_id)
-    game.players_liked.all()
-
-
-def update_game(postData, game_id):
-    print("entered")
-    game = Game.objects.get(id=game_id)
-
-    date = datetime.strptime(postData['date'], "%d-%b-%Y").date()
-    game.name = postData['game']
-    game.genere = postData['genere']
-    game.release_date = date
-    game.description = postData['description']
-    game.save()
-
-
-def delete_game(game_id):
-    game = Game.objects.get(id=game_id)
-    game.delete()
+def get_user_favorite_books(user_id):
+     return Book.objects.filter(users_who_like__id=user_id).values_list('id', flat=True)

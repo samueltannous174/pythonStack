@@ -7,13 +7,11 @@ urlpatterns = [
     path('login', views.login),
     path('success', views.success),
     path('logout', views.logout),
-    path('add_game', views.addGame),
-    path('sort/', views.sortByGenere),
-    path('game/<int:game_id>', views.showGame),
-    path('favorite/<int:game_id>', views.addToFavorites),
-    path('update_game/<int:game_id>', views.updateGame),
-    path('update_game2/<int:game_id>', views.updateGame2),
-    path('delete_game/<int:game_id>', views.deleteGame),
-
+    path('add_book', views.addBook),
+    path('books/<int:book_id>', views.viewBook),
+    path('delete_book/<int:book_id>', views.deleteBook),
+    path('update_book/<int:book_id>', views.updateBook),
+    path('unfavorite/<int:user_id>/<int:book_id>', views.unfavoriteBook),
+    path('favorite/<int:user_id>/<int:book_id>', views.favoriteBook),
 ]
 
